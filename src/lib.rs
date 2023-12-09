@@ -158,7 +158,7 @@ impl<T> FixedIndexVec<T> {
     /// assert_eq!(iter.next(), Some((2, &3)));
     /// assert_eq!(iter.next(), None);
     /// ```
-    pub fn iter(&self) -> impl Iterator<Item=(usize, &T)> {
+    pub fn iter(&self) -> impl Iterator<Item = (usize, &T)> {
         self.map.iter().map(|(i, v)| (*i, v))
     }
 
@@ -302,7 +302,7 @@ impl<T> std::ops::Index<usize> for FixedIndexVec<T> {
 }
 
 impl<T> FromIterator<T> for FixedIndexVec<T> {
-    fn from_iter<I: IntoIterator<Item=T>>(iter: I) -> FixedIndexVec<T> {
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> FixedIndexVec<T> {
         let mut map = BTreeMap::new();
         for (i, v) in iter.into_iter().enumerate() {
             map.insert(i, v);
