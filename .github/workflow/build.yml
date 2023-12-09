@@ -1,11 +1,9 @@
 name: Rust CI
 
-on:
-  push:
-    branches:
-      - main
-      - develop
-  pull_request:
+on: [push, pull_request]
+
+env:
+  CARGO_TERM_COLOR: always
 
 jobs:
   build_and_test:
