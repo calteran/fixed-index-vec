@@ -49,7 +49,7 @@ use fixed_index_vec::FixedIndexVec;
 
 ## Features
 
-- `enable-serde`: Enables serialization and deserialization of `FixedIndexVec` with [Serde](https://serde.rs/). Requires `FixedIndexVec` to contain values that implement `Serialize` and `DeserializeOwned`.
+- `serde`: Enables serialization and deserialization of `FixedIndexVec` with [Serde](https://serde.rs/). Requires `FixedIndexVec` to contain values that implement `Serialize` and `DeserializeOwned`.
 
 ## Example
 
