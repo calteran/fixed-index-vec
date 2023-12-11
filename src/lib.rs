@@ -350,3 +350,23 @@ impl<T, A> From<BTreeMap<A, T>> for FixedIndexVec<T> {
         map.into_iter().map(|(_, v)| v).collect()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::FixedIndexVec;
+
+    #[test]
+    fn test_send() {
+        fn assert_send<T: Send>() {}
+        assert_send::<FixedIndexVec<i32>>();
+        assert_send::<FixedIndexVec<f32>>();
+        assert_send::<FixedIndexVec<String>>();
+    }
+    #[test]
+    fn test_sync() {
+        fn assert_sync<T: Sync>() {}
+        assert_sync::<FixedIndexVec<i32>>();
+        assert_sync::<FixedIndexVec<f32>>();
+        assert_sync::<FixedIndexVec<String>>();
+    }
+}
