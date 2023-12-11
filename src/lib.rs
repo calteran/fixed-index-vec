@@ -325,6 +325,14 @@ impl<T> FromIterator<T> for FixedIndexVec<T> {
     }
 }
 
+impl<T> Extend<T> for FixedIndexVec<T> {
+    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
+        for v in iter.into_iter() {
+            self.push(v);
+        }
+    }
+}
+
 impl<T> From<Vec<T>> for FixedIndexVec<T> {
     fn from(vec: Vec<T>) -> FixedIndexVec<T> {
         vec.into_iter().collect()
