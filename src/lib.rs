@@ -1,6 +1,6 @@
 #![deny(missing_docs)]
 #![doc = include_str!("../README.md")]
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 use std::fmt::Display;
 
 /// A fixed-size indexed vector that maps indices to values.
@@ -328,5 +328,17 @@ impl<T> FromIterator<T> for FixedIndexVec<T> {
 impl<T> From<Vec<T>> for FixedIndexVec<T> {
     fn from(vec: Vec<T>) -> FixedIndexVec<T> {
         vec.into_iter().collect()
+    }
+}
+
+impl<T, A> From<HashMap<A, T>> for FixedIndexVec<T> {
+    fn from(map: HashMap<A, T>) -> FixedIndexVec<T> {
+        map.into_iter().map(|(_, v)| v).collect()
+    }
+}
+
+impl<T, A> From<BTreeMap<A, T>> for FixedIndexVec<T> {
+    fn from(map: BTreeMap<A, T>) -> FixedIndexVec<T> {
+        map.into_iter().map(|(_, v)| v).collect()
     }
 }
