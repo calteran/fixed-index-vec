@@ -4,8 +4,6 @@ version = "0.1.0"
 edition = "2021"
 license-file = "LICENSE"
 description = "A vector-like data structure whose indices do not change when elements are removed."
-homepage = "https://github.com/calteran/fixed-index-vec"
-documentation = "https://docs.rs/fixed-index-vec"
 repository = "https://github.com/calteran/fixed-index-vec"
 readme = "README.md"
 
