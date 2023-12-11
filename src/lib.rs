@@ -1,6 +1,7 @@
 #![deny(missing_docs)]
 #![doc = include_str!("../README.md")]
 use std::collections::BTreeMap;
+use std::fmt::Display;
 
 /// A fixed-size indexed vector that maps indices to values.
 ///
@@ -33,11 +34,21 @@ use std::collections::BTreeMap;
 /// - The `FixedIndexVec` is backed by a `BTreeMap`, so it is not as fast as a `Vec`.
 /// - Index notations are supported (eg. `vec[0]`), however, accessing an index that does not
 ///  exist will panic.
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FixedIndexVec<T> {
     map: BTreeMap<usize, T>,
     next_index: usize,
+}
+
+impl<T: Display> Display for FixedIndexVec<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut s = String::new();
+        for (i, v) in self.iter() {
+            s.push_str(&format!("{}: {}\n", i, v));
+        }
+        write!(f, "{}", s)
+    }
 }
 
 impl<T> FixedIndexVec<T> {
