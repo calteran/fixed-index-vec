@@ -1,6 +1,7 @@
 #![deny(missing_docs)]
 #![doc = include_str!("../README.md")]
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
+use std::fmt::Display;
 
 /// A fixed-size indexed vector that maps indices to values.
 ///
@@ -33,11 +34,21 @@ use std::collections::BTreeMap;
 /// - The `FixedIndexVec` is backed by a `BTreeMap`, so it is not as fast as a `Vec`.
 /// - Index notations are supported (eg. `vec[0]`), however, accessing an index that does not
 ///  exist will panic.
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FixedIndexVec<T> {
     map: BTreeMap<usize, T>,
     next_index: usize,
+}
+
+impl<T: Display> Display for FixedIndexVec<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut s = String::new();
+        for (i, v) in self.iter() {
+            s.push_str(&format!("{}: {}\n", i, v));
+        }
+        write!(f, "{}", s)
+    }
 }
 
 impl<T> FixedIndexVec<T> {
@@ -158,7 +169,7 @@ impl<T> FixedIndexVec<T> {
     /// assert_eq!(iter.next(), Some((2, &3)));
     /// assert_eq!(iter.next(), None);
     /// ```
-    pub fn iter(&self) -> impl Iterator<Item=(usize, &T)> {
+    pub fn iter(&self) -> impl Iterator<Item = (usize, &T)> {
         self.map.iter().map(|(i, v)| (*i, v))
     }
 
@@ -302,7 +313,7 @@ impl<T> std::ops::Index<usize> for FixedIndexVec<T> {
 }
 
 impl<T> FromIterator<T> for FixedIndexVec<T> {
-    fn from_iter<I: IntoIterator<Item=T>>(iter: I) -> FixedIndexVec<T> {
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> FixedIndexVec<T> {
         let mut map = BTreeMap::new();
         for (i, v) in iter.into_iter().enumerate() {
             map.insert(i, v);
@@ -314,8 +325,48 @@ impl<T> FromIterator<T> for FixedIndexVec<T> {
     }
 }
 
+impl<T> Extend<T> for FixedIndexVec<T> {
+    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
+        for v in iter.into_iter() {
+            self.push(v);
+        }
+    }
+}
+
 impl<T> From<Vec<T>> for FixedIndexVec<T> {
     fn from(vec: Vec<T>) -> FixedIndexVec<T> {
         vec.into_iter().collect()
+    }
+}
+
+impl<T, A> From<HashMap<A, T>> for FixedIndexVec<T> {
+    fn from(map: HashMap<A, T>) -> FixedIndexVec<T> {
+        map.into_values().collect()
+    }
+}
+
+impl<T, A> From<BTreeMap<A, T>> for FixedIndexVec<T> {
+    fn from(map: BTreeMap<A, T>) -> FixedIndexVec<T> {
+        map.into_values().collect()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::FixedIndexVec;
+
+    #[test]
+    fn test_send() {
+        fn assert_send<T: Send>() {}
+        assert_send::<FixedIndexVec<i32>>();
+        assert_send::<FixedIndexVec<f32>>();
+        assert_send::<FixedIndexVec<String>>();
+    }
+    #[test]
+    fn test_sync() {
+        fn assert_sync<T: Sync>() {}
+        assert_sync::<FixedIndexVec<i32>>();
+        assert_sync::<FixedIndexVec<f32>>();
+        assert_sync::<FixedIndexVec<String>>();
     }
 }

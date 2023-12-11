@@ -1,5 +1,7 @@
 # Fixed Index Vector - Rust Crate
 
+[![GitHub Workflow Status](https://github.com/calteran/fixed-index-vec/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/calteran/fixed-index-vec/)
+
 This crate provides `FixedIndexVec`, a Rust collection that functions like an array with immutable indices.
 Each value is associated with a unique index upon insertion.
 The value can be accessed, inserted, and removed with the index serving as the identifier.
@@ -47,7 +49,7 @@ use fixed_index_vec::FixedIndexVec;
 
 ## Features
 
-- `enable-serde`: Enables serialization and deserialization of `FixedIndexVec` with [Serde](https://serde.rs/). Requires `FixedIndexVec` to contain values that implement `Serialize` and `DeserializeOwned`.
+- `serde`: Enables serialization and deserialization of `FixedIndexVec` with [Serde](https://serde.rs/). Requires `FixedIndexVec` to contain values that implement `Serialize` and `DeserializeOwned`.
 
 ## Example
 
