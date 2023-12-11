@@ -341,13 +341,13 @@ impl<T> From<Vec<T>> for FixedIndexVec<T> {
 
 impl<T, A> From<HashMap<A, T>> for FixedIndexVec<T> {
     fn from(map: HashMap<A, T>) -> FixedIndexVec<T> {
-        map.into_iter().map(|(_, v)| v).collect()
+        map.into_values().collect()
     }
 }
 
 impl<T, A> From<BTreeMap<A, T>> for FixedIndexVec<T> {
     fn from(map: BTreeMap<A, T>) -> FixedIndexVec<T> {
-        map.into_iter().map(|(_, v)| v).collect()
+        map.into_values().collect()
     }
 }
 
