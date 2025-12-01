@@ -33,7 +33,7 @@ use std::fmt::Display;
 ///
 /// - The `FixedIndexVec` is backed by a `BTreeMap`, so it is not as fast as a `Vec`.
 /// - Index notations are supported (eg. `vec[0]`), however, accessing an index that does not
-///  exist will panic.
+///   exist will panic.
 #[derive(Clone, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FixedIndexVec<T> {
